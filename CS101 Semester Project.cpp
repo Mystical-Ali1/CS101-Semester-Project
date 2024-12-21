@@ -83,7 +83,30 @@ void displayByCategory(const string categories[], const double expenses[], int e
         cout << "No expenses found for this category.\n";
     }
 }
+void deleteExpense(string categories[], double expenses[], int& expenseCount){
+    if (expenseCount == 0) {
+        cout << "No expenses to delete.\n";
+        return;
+    }
+    
+    int index;
+    displayExpenses(categories, expenses, expenseCount);
+    cout << "Enter the index of the expense to delete (0 to " << expenseCount - 1 << "): ";
+    cin >> index;
+    
+    if (index < 0 || index >= expenseCount) {
+        cout << "Invalid index. No expense deleted.\n";
+        return;
+    }
 
+    
+    for (int i = index; i < expenseCount - 1; i++) {
+        categories[i] = categories[i + 1];
+        expenses[i] = expenses[i + 1];
+    }
+    expenseCount--; 
+    cout << "Expense deleted successfully.\n";
+}
 int main() {
     const int maxExpenses = 100;
     string categories[maxExpenses];
@@ -100,7 +123,8 @@ int main() {
         cout << "2. Display All Expenses\n";
         cout << "3. Display Total Expenses\n";
         cout << "4. Display Expenses by Category\n";
-        cout << "5. Save and Exit\n";
+        cout << "5. Delete an Expense\n";
+        cout << "6. Save and Exit\n";
         cout << "Choose an option: ";
         cin >> choice;
         
@@ -124,13 +148,16 @@ int main() {
                 break;
             }
             case 5:
+                deleteExpense(categories, expenses, expenseCount);
+                break;
+            case 6:
                 saveExpenses(categories, expenses, expenseCount, fileName);
                 cout << "Exiting program.\n";
                 break;
             default:
                 cout << "Invalid choice. Please try again.\n";
         }
-    } while (choice != 5);
+    } while (choice != 6);
     
     return 0;
 }
