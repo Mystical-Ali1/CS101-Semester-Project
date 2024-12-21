@@ -4,72 +4,72 @@
 using namespace std;
 
 
-void saveExpenses(const string categories[], const double expenses[], int count, const string& filename) {
-    ofstream file(filename);
+void saveExpenses(const string categories[], const double expenses[], int expenseCount, const string& fileName) {
+    ofstream file(fileName);
     if (!file) {
         cout << "Error opening file for writing.\n";
         return;
     }
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < expenseCount; i++) {
         file << categories[i] << " " << expenses[i] << endl;
     }
     file.close();
-    cout << "Expenses saved to " << filename << endl;
+    cout << "Expenses saved to " << fileName << endl;
 }
 
 
-void loadExpenses(string categories[], double expenses[], int& count, const string& filename) {
-    ifstream file(filename);
+void loadExpenses(string categories[], double expenses[], int& expenseCount, const string& fileName) {
+    ifstream file(fileName);
     if (!file) {
         cout << "No previous expenses found. Starting fresh.\n";
         return;
     }
-    count = 0;
-    while (file >> categories[count] >> expenses[count]) {
-        count++;
+    expenseCount = 0;
+    while (file >> categories[expenseCount] >> expenses[expenseCount]) {
+        expenseCount++;
     }
     file.close();
-    cout << "Expenses loaded from " << filename << endl;
+    cout << "Expenses loaded from " << fileName << endl;
 }
 
 
-void addExpense(string categories[], double expenses[], int& count, int maxExpenses) {
-    if (count >= maxExpenses) {
+void addExpense(string categories[], double expenses[], int& expenseCount, int maxExpenses) {
+    if (expenseCount >= maxExpenses) {
         cout << "Expense limit reached. Cannot add more expenses.\n";
         return;
     }
     
     cout << "Enter expense category (e.g., Food, Entertainment, Bills): ";
-    cin >> categories[count];
+    cin >> categories[expenseCount];
     cout << "Enter amount spent: ";
-    cin >> expenses[count];
+    cin >> expenses[expenseCount];
     
-    count++;
+    expenseCount++;
 }
 
-void displayExpenses(const string categories[], const double expenses[], int count) {
+void displayExpenses(const string categories[], const double expenses[], int expenseCount) {
     cout << "\n--- Expense List ---\n";
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < expenseCount; i++) {
         cout << "Category: " << categories[i] << " - Amount: $" << expenses[i] << endl;
     }
 }
 
 
-double calculateTotal(const double expenses[], int count) {
+double calculateTotal(const double expenses[], int expenseCount) {
     double total = 0;
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < expenseCount; i++) {
         total += expenses[i];
     }
     return total;
 }
 
 
-void displayByCategory(const string categories[], const double expenses[], int count, const string& targetCategory) {
+void displayByCategory(const string categories[], const double expenses[], int expenseCount, const string& targetCategory) {
     cout << "\n--- Expenses for Category: " << targetCategory << " ---\n";
     double categoryTotal = 0;
     bool found = false;
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < expenseCount; i++) {
         if (categories[i] == targetCategory) {
             cout << "Amount: $" << expenses[i] << endl;
             categoryTotal += expenses[i];
@@ -88,10 +88,10 @@ int main() {
     const int maxExpenses = 100;
     string categories[maxExpenses];
     double expenses[maxExpenses];
-    int count = 0;
-    string filename = "expenses.txt";
+    int expenseCount = 0;
+    string fileName = "expenses.txt";
 
-    loadExpenses(categories, expenses, count, filename);
+    loadExpenses(categories, expenses, expenseCount, fileName);
     
     int choice;
     do {
@@ -106,13 +106,13 @@ int main() {
         
         switch (choice) {
             case 1:
-                addExpense(categories, expenses, count, maxExpenses);
+                addExpense(categories, expenses, expenseCount, maxExpenses);
                 break;
             case 2:
-                displayExpenses(categories, expenses, count);
+                displayExpenses(categories, expenses, expenseCount);
                 break;
             case 3: {
-                double total = calculateTotal(expenses, count);
+                double total = calculateTotal(expenses, expenseCount);
                 cout << "Total Expenses: $" << total << endl;
                 break;
             }
@@ -120,11 +120,11 @@ int main() {
                 string category;
                 cout << "Enter category to display: ";
                 cin >> category;
-                displayByCategory(categories, expenses, count, category);
+                displayByCategory(categories, expenses, expenseCount, category);
                 break;
             }
             case 5:
-                saveExpenses(categories, expenses, count, filename);
+                saveExpenses(categories, expenses, expenseCount, fileName);
                 cout << "Exiting program.\n";
                 break;
             default:
